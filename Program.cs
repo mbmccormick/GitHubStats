@@ -24,6 +24,11 @@ namespace GitHubStats
                 WebClient client = new WebClient();
                 client.Credentials = new NetworkCredential(args[0], args[1]);
 
+                string jsonResult0 = client.DownloadString("https://api.github.com/user/emails");
+                dynamic result0 = new JsonReader().Read(jsonResult0);
+
+                string[] emails = (string[])result0;
+
                 jsonResult1 = client.DownloadString("https://api.github.com/users/" + args[0] + "/repos?per_page=100");
                 dynamic result1 = new JsonReader().Read(jsonResult1);
 
@@ -54,7 +59,8 @@ namespace GitHubStats
                             {
                                 DateTime createdDate2 = Convert.ToDateTime(c.committed_date);
                                 if (createdDate2 > DateTime.Now.AddYears(-1) &&
-                                    c.author.login == args[0])
+                                    (emails.Contains((string)c.author.email) == true ||
+                                     emails.Contains((string)c.committer.email) == true))
                                 {
                                     commitCount++;
 
