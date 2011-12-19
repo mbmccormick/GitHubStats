@@ -29,7 +29,7 @@ namespace GitHubStats
 
                 string[] emails = (string[])result0;
 
-                jsonResult1 = client.DownloadString("https://api.github.com/users/" + args[0] + "/repos?per_page=100");
+                jsonResult1 = client.DownloadString("https://api.github.com/user/repos?per_page=100");
                 dynamic result1 = new JsonReader().Read(jsonResult1);
 
                 int repoCount = 0;
@@ -52,7 +52,7 @@ namespace GitHubStats
                         string jsonResult2;
                         do
                         {
-                            jsonResult2 = client.DownloadString("http://github.com/api/v2/json/commits/list/" + args[0] + "/" + r.name + "/master?page=" + page);
+                            jsonResult2 = client.DownloadString("https://github.com/api/v2/json/commits/list/" + args[0] + "/" + r.name + "/master?page=" + page);
                             dynamic result2 = new JsonReader().Read(jsonResult2);
 
                             foreach (var c in result2.commits)
